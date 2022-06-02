@@ -1,0 +1,61 @@
+{
+  "name": "sol-alert",
+  "version": "1.0.0",
+  "description": "Solana wallet transactions trackin bot.",
+  "main": "mod.js",
+  "scripts": {
+    "start": "node mod.js",
+    "pm2": "pm2 start npm --name 'mod' -- run start",
+    "lint": "eslint . --ext .js"
+  },
+  "author": "muhitrhn",
+  "license": "ISC",
+  "dependencies": {
+    "@sentry/node": "6.12.0",
+    "@solana/web3.js": "^1.37.1",
+    "chalk": "^4.1.2",
+    "discord.js": "^13.6.0",
+    "moment": "^2.29.1",
+    "quick.db": "*"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "commonjs": true,
+      "es2020": true,
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "rules": {
+      "prefer-const": [
+        "error"
+      ],
+      "indent": [
+        "error",
+        "tab",
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "linebreak-style": 0,
+      "require-atomic-updates": 0
+    }
+  }
+}
