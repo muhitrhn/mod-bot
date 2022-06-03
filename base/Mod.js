@@ -85,43 +85,47 @@ class Mod extends Client {
 	}
 
 	async modLogs (member) {
-		const memberId = member.id;
-		const memberName = member.user.tag;
-		const initDateTime = `<t:${Math.round(new Date().getTime() / 1000)}>`;
-		const modLogsChannel = this.channels.cache.get(this.config.support.modlogs);
-
-		await member.kick();
+		const isSpammer = db.get("spamNames").find(name => member.user.username.toLowerCase().includes(name.toLowerCase())) || db.get("spamNames").find(name => member.displayName.toLowerCase().includes(name.toLowerCase()));
 		
-		await modLogsChannel.send({
-			embeds: [{
-				title: `Prevented spammer!`,
-				fields: [
-					{
-						name: `Id -`,
-						value: `\`${memberId}\``
-					},
-					{
-						name: `Username -`,
-						value: `\`${memberName}\``
-					},
-					{
-						name: `Time -`,
-						value: initDateTime
-					}
-				],
-				color: 15548997,
-				footer: {
-					text: this.user.username,
-					icon_url: this.user.displayAvatarURL({ dynamic: true })
-				},
-				author: {
-					name: member.guild.name,
-					icon_url: member.guild.iconURL({ dynamic: true })
-				}
-			}]
-		});
+		if (isSpammer) {
+			const memberId = member.id;
+			const memberName = member.user.tag;
+			const initDateTime = `<t:${Math.round(new Date().getTime() / 1000)}>`;
+			const modLogsChannel = this.channels.cache.get(this.config.support.modlogs);
 
-		return /*await this.wait(100)*/;
+			//await member.kick();
+			
+			await modLogsChannel.send({
+				embeds: [{
+					title: `Prevented spammer!`,
+					fields: [
+						{
+							name: `Id -`,
+							value: `\`${memberId}\``
+						},
+						{
+							name: `Username -`,
+							value: `\`${memberName}\``
+						},
+						{
+							name: `Time -`,
+							value: initDateTime
+						}
+					],
+					color: 15548997,
+					footer: {
+						text: this.user.username,
+						icon_url: this.user.displayAvatarURL({ dynamic: true })
+					},
+					author: {
+						name: member.guild.name,
+						icon_url: member.guild.iconURL({ dynamic: true })
+					}
+				}]
+			});
+		}
+
+		return await this.wait(100);
 	}
 }
 
