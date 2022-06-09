@@ -9,6 +9,18 @@ module.exports = class {
 	async run (oldMember, newMember) {
 		const client = this.client;
 		
-		await client.modLogs(newMember);
+		try {
+			await client.modLogs(newMember);
+		} catch (err) {
+			const errEmbed = new Discord.MessageEmbed()
+				.setTitle('An Error Occurred.')
+				.setDescription(`**Stack Trace:**\n\`\`\`${err.stack || err}\`\`\``);
+
+			console.log(err);
+            const supportErrorLog = client.channels.cache.get(db.get('config.errorsChannel').id);
+			if (supportErrorLog) {
+                await supportErrorLog.send({ embeds: [errEmbed] });
+            }
+		}
 	}
 };

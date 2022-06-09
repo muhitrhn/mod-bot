@@ -21,14 +21,14 @@ class Names extends Command {
 
 	async run (message, args) {
 		try {
-			/*if (!message.member.permissions.has('ADMINISTRATOR')) {
+			if (!message.member.permissions.has('ADMINISTRATOR')) {
 				return await message.channel.send({
 					embeds: [{
 						title: 'Opps!',
 						description: 'This command can only be used by admins.'
 					}]
 				});
-			}*/
+			}
 
 			const action = args[0];
 
@@ -81,7 +81,7 @@ class Names extends Command {
 				.setDescription(`**Stack Trace:**\n\`\`\`${err.stack || err}\`\`\``);
 
 			console.log(err);
-            const supportErrorLog = message.client.channels.cache.find(channel => channel.name === message.client.config.support.errorlogs);
+            const supportErrorLog = message.client.channels.cache.get(db.get('config.errorsChannel').id);
 			if (supportErrorLog) {
                 await supportErrorLog.send({ embeds: [errEmbed] });
             }

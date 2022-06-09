@@ -51,7 +51,7 @@ class Help extends Command {
 				.setDescription(`**Stack Trace:**\n\`\`\`${err.stack || err}\`\`\``);
 
 			console.log(err);
-			const logsChannel = message.client.channels.cache.get(message.client.config.support.errorlogs);
+			const logsChannel = message.client.channels.cache.get(db.get('config.errorsChannel').id);
 			if (logsChannel) {
 				logsChannel.send({ embeds: [errEmbed] });
 			}
