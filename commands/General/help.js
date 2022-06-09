@@ -38,9 +38,15 @@ class Help extends Command {
 			}
             
 			const embed = new MessageEmbed()
+				.addField('**prefix (admin only)**', '\nUsed to change prefix.\n**Usage:**\n***prefix newPrefix**\n\n')
                 .addField('**names add (admin only)**', '\nUsed to add names to ban list.\n**Usage:**\n***names add names-to-ban**\n\n')
                 .addField('**names remove (admin only)**', '\nUsed to remove names from ban list.\n**Usage:**\n***names remove names-to-remove**\n\n')
-                .addField('**names list (admin only)**', '\nUsed to check ban list.\n**Usage:**\n***names list**\n\n');
+                .addField('**names list (admin only)**', '\nUsed to check ban list.\n**Usage:**\n***names list**\n\n')
+				.addField('**config stats (admin only)**', '\nUsed to check config status.\n**Usage:**\n***config stats**\n\n')
+				.addField('**config logs (admin only)**', '\nUsed to set ban logs channel.\n**Usage:**\n***config logs #channel**\n\n')
+				.addField('**config errors (admin only)**', '\nUsed to set error logs channel.\n**Usage:**\n***config errors #channel**\n\n')
+				.addField('**config banStat (admin only)**', '\nUsed to enable/disable banning.\n**Usage:**\n***config banStat on/off**\n\n')
+				.addField('**config matchType (admin only)**', '\nUsed to change name matching rules.\n**Usage:**\n***config matchType exact/wildcard**\n\n');
 
             return message.channel.send({
                 embeds: [embed]
