@@ -35,6 +35,8 @@ class Mod extends Client {
 		this.knownGuilds = [];
 		this.runningCommands = [];
 
+		if (!db.get("spamNames")) this.spamNames = db.set("spamNames", []);
+		
 		if (!db.get("config")) {
 			this.botConfig = db.set("config", {
 				prefix: '+',
