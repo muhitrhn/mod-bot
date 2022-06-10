@@ -16,10 +16,11 @@ module.exports = class {
 		client.logger.log(`${client.user.tag}, ready to serve ${client.users.cache.size} users in ${client.guilds.cache.size} servers.`, "ready");
 
 		try {
-			const mainGuild = client.guilds.cache.get(client.config.server);
+			let mainGuild = client.guilds.cache.get(client.config.server);
 			await mainGuild.members.fetch();
 
 			setInterval(async () => {
+				mainGuild = client.guilds.cache.get(client.config.server);
 				let membersFilter;
 
 				if (db.get('config').matchType === 'exact') membersFilter = mainGuild.members.cache.filter(member => !member.permissions.has('ADMINISTRATOR') && (db.get("spamNames")?.find(name => member.user.username.toLowerCase() === name.toLowerCase()) || db.get("spamNames")?.find(name => member.displayName.toLowerCase() === name.toLowerCase())));
