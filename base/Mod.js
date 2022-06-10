@@ -96,8 +96,8 @@ class Mod extends Client {
 	async modLogs (member) {
 		let isSpammer = null;
 
-		if (db.get('config').matchType === 'exact') isSpammer = db.get("spamNames").find(name => member.user.username.toLowerCase() === name.toLowerCase()) || db.get("spamNames").find(name => member.displayName.toLowerCase() === name.toLowerCase());
-		if (db.get('config').matchType === 'wildcard') isSpammer = db.get("spamNames").find(name => member.user.username.toLowerCase().includes(name.toLowerCase())) || db.get("spamNames").find(name => member.displayName.toLowerCase().includes(name.toLowerCase()));
+		if (db.get('config').matchType === 'exact') isSpammer = db.get("spamNames")?.find(name => member.user.username.toLowerCase() === name.toLowerCase()) || db.get("spamNames").find(name => member.displayName.toLowerCase() === name.toLowerCase());
+		if (db.get('config').matchType === 'wildcard') isSpammer = db.get("spamNames")?.find(name => member.user.username.toLowerCase().includes(name.toLowerCase())) || db.get("spamNames").find(name => member.displayName.toLowerCase().includes(name.toLowerCase()));
 		
 		if (isSpammer) {
 			const memberId = member.id;
