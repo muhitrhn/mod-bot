@@ -174,57 +174,6 @@ class Config extends Command {
 					});
 				}
 			}
-
-			if (action === 'matchType') {
-				const matchType = args[1];
-
-				if (!matchType || matchType !== 'exact' || matchType !== 'wildcard') {
-					return await message.channel.send({
-						embeds: [{
-							title: 'Opps!',
-							description: 'Please enter either `exact (Default)`/`wildcard`.'
-						}]
-					});
-				}
-				
-				if (matchType === 'exact' && db.get('config.matchType') === 'exact') {
-					return await message.channel.send({
-						embeds: [{
-							title: 'Opps!',
-							description: 'Match type is already `exact`.'
-						}]
-					});
-				}
-
-				if (matchType === 'wildcard' && db.get('config.matchType') === 'wildcard') {
-					return await message.channel.send({
-						embeds: [{
-							title: 'Opps!',
-							description: 'Match type is already `wildcard`.'
-						}]
-					});
-				}
-
-				if (matchType === 'exact') {
-					db.set('config.matchType', 'exact');
-				
-					return await message.channel.send({
-						embeds: [{
-							description: `Successfully set match type to \`exact\`.`
-						}]
-					});
-				}
-
-				if (matchType === 'wildcard') {
-					db.set('config.matchType', 'wildcard');
-				
-					return await message.channel.send({
-						embeds: [{
-							description: `Successfully set match type to \`wildcard\`.`
-						}]
-					});
-				}
-			}
 		} catch (err) {
 			const errEmbed = new MessageEmbed()
 				.setTitle('An Error Occurred.')

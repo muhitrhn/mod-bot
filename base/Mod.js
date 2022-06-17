@@ -35,14 +35,13 @@ class Mod extends Client {
 		this.knownGuilds = [];
 		this.runningCommands = [];
 
-		if (!db.get("spamNames")) this.spamNames = db.set("spamNames", []);
+		if (!db.get("spamNames")) this.spamNames = db.set("spamNames", { exact: [], wildcard: [] });
 		
 		if (!db.get("config")) {
 			this.botConfig = db.set("config", {
 				prefix: '+',
 				logsChannel: null,
 				errorsChannel: null,
-				matchType: 'exact',
 				banStat: false
 			});
 		}
@@ -96,10 +95,7 @@ class Mod extends Client {
 	}
 
 	async modLogs (member) {
-		let isSpammer = null;
-
-		if (db.get('config').matchType === 'exact') isSpammer = db.get("spamNames")?.find(name => member.user.username.toLowerCase() === name.toLowerCase()) || db.get("spamNames").find(name => member.displayName.toLowerCase() === name.toLowerCase());
-		if (db.get('config').matchType === 'wildcard') isSpammer = db.get("spamNames")?.find(name => member.user.username.toLowerCase().includes(name.toLowerCase())) || db.get("spamNames").find(name => member.displayName.toLowerCase().includes(name.toLowerCase()));
+		let isSpammer = db.get("spamNames")?.exact.find(name => member.user.username.toLowerCase(name.toLowerCase())) || db.get("spamNames")?.wildcard.find(name => member.user.username.toLowerCase(name.toLowerCase()));
 		
 		if (isSpammer) {
 			const memberId = member.id;

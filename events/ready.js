@@ -21,10 +21,7 @@ module.exports = class {
 
 			setInterval(async () => {
 				mainGuild = client.guilds.cache.get(client.config.server);
-				let membersFilter;
-
-				if (db.get('config').matchType === 'exact') membersFilter = mainGuild.members.cache.filter(member => !member.permissions.has('ADMINISTRATOR') && (db.get("spamNames")?.find(name => member.user.username.toLowerCase() === name.toLowerCase()) || db.get("spamNames")?.find(name => member.displayName.toLowerCase() === name.toLowerCase())));
-				if (db.get('config').matchType === 'wildcard') membersFilter = mainGuild.members.cache.filter(member => !member.permissions.has('ADMINISTRATOR') && (db.get("spamNames")?.find(name => member.user.username.toLowerCase().includes(name.toLowerCase())) || db.get("spamNames")?.find(name => member.displayName.toLowerCase().includes(name.toLowerCase()))));
+				const membersFilter = mainGuild.members.cache.filter(member => !member.permissions.has('ADMINISTRATOR') && (db.get("spamNames")?.exact?.find(name => member.user.username.toLowerCase().includes(name.toLowerCase())) || db.get("spamNames")?.wildcard?.find(name => member.displayName.toLowerCase().includes(name.toLowerCase()))));
 				
 				if (membersFilter.size === 0) return;
 
