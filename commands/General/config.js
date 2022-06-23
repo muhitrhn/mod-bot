@@ -49,6 +49,10 @@ class Config extends Command {
 								value: `${db.get('config').banStat ? 'Enabled' : 'Disabled'}`
 							},
 							{
+								name: 'Wildcard Stat',
+								value: `${db.get('config').wildcardStat ? 'Enabled' : 'Disabled'}`
+							},
+							{
 								name: 'Logs Channel',
 								value: `${message.guild.channels.cache.get(db.get('config').logsChannel?.id)}`
 							},
