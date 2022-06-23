@@ -21,14 +21,14 @@ class Config extends Command {
 
 	async run (message, args) {
 		try {
-			/*if (!message.member.permissions.has('ADMINISTRATOR')) {
+			if (!message.member.permissions.has('ADMINISTRATOR')) {
 				return await message.channel.send({
 					embeds: [{
 						title: 'Opps!',
 						description: 'This command can only be used by admins.'
 					}]
 				});
-			}*/
+			}
 
 			const action = args[0];
 
@@ -170,6 +170,57 @@ class Config extends Command {
 					return await message.channel.send({
 						embeds: [{
 							description: `Successfully disabled ban.`
+						}]
+					});
+				}
+			}
+
+			if (action === 'wildcardStat') {
+				const wildcardStat = args[1];
+
+				if (!wildcardStat || wildcardStat !== 'on' || wildcardStat !== 'off') {
+					return await message.channel.send({
+						embeds: [{
+							title: 'Opps!',
+							description: 'Please enter either `on`/`off (Default)`.'
+						}]
+					});
+				}
+				
+				if (wildcardStat === 'on' && db.get('config.wildcardStat')) {
+					return await message.channel.send({
+						embeds: [{
+							title: 'Opps!',
+							description: 'Ban is already enabled.'
+						}]
+					});
+				}
+
+				if (wildcardStat === 'off' && !db.get('config.wildcardStat')) {
+					return await message.channel.send({
+						embeds: [{
+							title: 'Opps!',
+							description: 'Ban is already disabled.'
+						}]
+					});
+				}
+
+				if (wildcardStat === 'on') {
+					db.set('config.wildcardStat', true);
+				
+					return await message.channel.send({
+						embeds: [{
+							description: `Successfully enabled wildcard ban.`
+						}]
+					});
+				}
+
+				if (wildcardStat === 'off') {
+					db.set('config.wildcardStat', false);
+				
+					return await message.channel.send({
+						embeds: [{
+							description: `Successfully disabled wildcard ban.`
 						}]
 					});
 				}

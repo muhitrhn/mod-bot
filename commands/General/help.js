@@ -47,7 +47,7 @@ class Help extends Command {
 				.addField('**config logs (admin only)**', `\nUsed to set ban logs channel.\n**Usage:**\n**${db.get('config').prefix}config logs #channel**\n\n`)
 				.addField('**config errors (admin only)**', `\nUsed to set error logs channel.\n**Usage:**\n**${db.get('config').prefix}config errors #channel**\n\n`)
 				.addField('**config banStat (admin only)**', `\nUsed to enable/disable banning.\n**Usage:**\n**${db.get('config').prefix}config banStat on/off**\n\n`)
-				.addField('**config matchType (admin only)**', `\nUsed to change name matching rules.\n**Usage:**\n**${db.get('config').prefix}config matchType exact/wildcard**\n\n`);
+				.addField('**config wildcardStat (admin only)**', `\nUsed to enable/disable wildcardStat matching rules.\n**Usage:**\n**${db.get('config').prefix}config wildcardStat on/off**\n\n`);
 
             return message.channel.send({
                 embeds: [embed]

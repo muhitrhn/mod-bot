@@ -42,7 +42,8 @@ class Mod extends Client {
 				prefix: '+',
 				logsChannel: null,
 				errorsChannel: null,
-				banStat: false
+				banStat: false,
+				wildcardStat: false
 			});
 		}
 
@@ -97,6 +98,8 @@ class Mod extends Client {
 	async modLogs (member) {
 		let isSpammer = db.get("spamNames")?.exact.find(name => member.user.username.toLowerCase(name.toLowerCase())) || db.get("spamNames")?.wildcard.find(name => member.user.username.toLowerCase(name.toLowerCase()));
 		
+		if (!db.get('config.wildcardStat')) isSpammer = db.get("spamNames")?.exact.find(name => member.user.username.toLowerCase(name.toLowerCase()));
+
 		if (isSpammer) {
 			const memberId = member.id;
 			const memberName = member.user.tag;
