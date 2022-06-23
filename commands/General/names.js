@@ -21,14 +21,14 @@ class Names extends Command {
 
 	async run (message, args) {
 		try {
-			/*if (!message.member.permissions.has('ADMINISTRATOR')) {
+			if (!message.member.permissions.has('ADMINISTRATOR')) {
 				return await message.channel.send({
 					embeds: [{
 						title: 'Opps!',
 						description: 'This command can only be used by admins.'
 					}]
 				});
-			}*/
+			}
 
 			const action = args[0];
 
@@ -36,12 +36,12 @@ class Names extends Command {
 
 			const banNames = args.splice(1).map(arg => arg.replace('+', ' '));
 
-			if (action === 'add') {
+			if (action === 'aexact') {
 				if (!banNames) return await message.channel.send({ embeds: [{ title: 'Opps!', description: 'Please provide names to ban.' }] });
 				
 				for (const name of banNames) {
-					if (!db.get("spamNames").find(bname => bname === name)) {
-						db.push("spamNames", name)
+					if (!db.get("spamNames").exact.find(bname => bname === name)) {
+						db.push("spamNames.exact", name)
 					}
 				}
 	
@@ -53,11 +53,42 @@ class Names extends Command {
 				}); 
 			}
 
-			if (action === 'remove') {
+			if (action === 'awild') {
+				if (!banNames) return await message.channel.send({ embeds: [{ title: 'Opps!', description: 'Please provide names to ban.' }] });
+				
+				for (const name of banNames) {
+					if (!db.get("spamNames").wildcard.find(bname => bname === name)) {
+						db.push("spamNames.wildcard", name)
+					}
+				}
+	
+				return await message.channel.send({
+					embeds: [{
+						title: 'Successful!',
+						description: `Added \`${banNames.map(name => name).join(", ")}\` to ban list successfully!`
+					}]
+				}); 
+			}
+
+			if (action === 'rexact') {
 				if (!banNames) return await message.channel.send({ embeds: [{ title: 'Opps!', description: 'Please provide names to remove from ban list.' }] });
 				
-				const updateNameList = db.get("spamNames").filter(name => !banNames.includes(name));
-				db.set("spamNames", updateNameList)
+				const updateNameList = db.get("spamNames").exact.filter(name => !banNames.includes(name));
+				db.set("spamNames.exact", updateNameList)
+	
+				return await message.channel.send({
+					embeds: [{
+						title: 'Successful!',
+						description: `Removed \`${banNames.map(name => name).join(", ")}\` from ban list successfully!`
+					}]
+				}); 
+			}
+
+			if (action === 'rwild') {
+				if (!banNames) return await message.channel.send({ embeds: [{ title: 'Opps!', description: 'Please provide names to remove from ban list.' }] });
+				
+				const updateNameList = db.get("spamNames").wildcard.filter(name => !banNames.includes(name));
+				db.set("spamNames.wildcard", updateNameList)
 	
 				return await message.channel.send({
 					embeds: [{
@@ -71,7 +102,16 @@ class Names extends Command {
 				return await message.channel.send({
 					embeds: [{
 						title: 'Banned Names List',
-						description: `\`${db.get("spamNames").length > 0 ? db.get("spamNames").map(name => name).join(", ") : 'Ban list is empty.'}\``
+						fields: [
+							{
+								name: 'Exact',
+								value: `\`${db.get("spamNames").exact.length > 0 ? db.get("spamNames").exact.map(name => name).join(", ") : 'Exact list is empty.'}\``
+							},
+							{
+								name: 'Wildcard',
+								value: `\`${db.get("spamNames").wildcard.length > 0 ? db.get("spamNames").wildcard.map(name => name).join(", ") : 'Wildcard list is empty.'}\``
+							}
+						]
 					}]
 				}); 
 			}
@@ -81,7 +121,7 @@ class Names extends Command {
 				.setDescription(`**Stack Trace:**\n\`\`\`${err.stack || err}\`\`\``);
 
 			console.log(err);
-            const supportErrorLog = message.client.channels.cache.find(channel => channel.name === message.client.config.support.errorlogs);
+            const supportErrorLog = message.client.channels.cache.get(db.get('config.errorsChannel').id);
 			if (supportErrorLog) {
                 await supportErrorLog.send({ embeds: [errEmbed] });
             }

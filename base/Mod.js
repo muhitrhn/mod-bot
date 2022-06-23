@@ -35,7 +35,17 @@ class Mod extends Client {
 		this.knownGuilds = [];
 		this.runningCommands = [];
 
-		if (!db.get("spamNames")) this.spamNames = db.set("spamNames", []);
+		if (!db.get("spamNames")) this.spamNames = db.set("spamNames", { exact: [], wildcard: [] });
+		
+		if (!db.get("config")) {
+			this.botConfig = db.set("config", {
+				prefix: '+',
+				logsChannel: null,
+				errorsChannel: null,
+				banStat: false
+			});
+		}
+
 	}
 
 	printDate(date, format, locale){
@@ -85,44 +95,46 @@ class Mod extends Client {
 	}
 
 	async modLogs (member) {
-		const isSpammer = db.get("spamNames").find(name => member.user.username.toLowerCase().includes(name.toLowerCase())) || db.get("spamNames").find(name => member.displayName.toLowerCase().includes(name.toLowerCase()));
+		let isSpammer = db.get("spamNames")?.exact.find(name => member.user.username.toLowerCase(name.toLowerCase())) || db.get("spamNames")?.wildcard.find(name => member.user.username.toLowerCase(name.toLowerCase()));
 		
 		if (isSpammer) {
 			const memberId = member.id;
 			const memberName = member.user.tag;
 			const initDateTime = `<t:${Math.round(new Date().getTime() / 1000)}>`;
-			const modLogsChannel = this.channels.cache.get(this.config.support.modlogs);
+			const modLogsChannel = this.channels.cache.get(db.get('config.logsChannel')?.id);
 
-			//await member.kick();
+			if (db.get('config').banStat) await member.ban();
 			
-			await modLogsChannel.send({
-				embeds: [{
-					title: `Prevented spammer!`,
-					fields: [
-						{
-							name: `Id -`,
-							value: `\`${memberId}\``
+			if (modLogsChannel) {
+				await modLogsChannel.send({
+					embeds: [{
+						title: `Prevented spammer!`,
+						fields: [
+							{
+								name: `Id -`,
+								value: `\`${memberId}\``
+							},
+							{
+								name: `Username -`,
+								value: `\`${memberName}\``
+							},
+							{
+								name: `Time -`,
+								value: initDateTime
+							}
+						],
+						color: 15548997,
+						footer: {
+							text: this.user.username,
+							icon_url: this.user.displayAvatarURL({ dynamic: true })
 						},
-						{
-							name: `Username -`,
-							value: `\`${memberName}\``
-						},
-						{
-							name: `Time -`,
-							value: initDateTime
+						author: {
+							name: member.guild.name,
+							icon_url: member.guild.iconURL({ dynamic: true })
 						}
-					],
-					color: 15548997,
-					footer: {
-						text: this.user.username,
-						icon_url: this.user.displayAvatarURL({ dynamic: true })
-					},
-					author: {
-						name: member.guild.name,
-						icon_url: member.guild.iconURL({ dynamic: true })
-					}
-				}]
-			});
+					}]
+				});
+			}
 		}
 
 		return await this.wait(100);

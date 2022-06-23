@@ -1,4 +1,5 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const db = require("quick.db"),
+	{ MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
 const xpCooldown = {},
 	cmdCooldown = {};
 
@@ -24,7 +25,7 @@ module.exports = class {
 		}
 
 		// Gets the prefix
-		const prefix = client.functions.getPrefix(message, client.config);
+		const prefix = client.functions.getPrefix(message, db.get('config'));
 		if(!prefix){
 			return;
 		}
