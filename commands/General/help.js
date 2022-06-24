@@ -40,8 +40,8 @@ class Help extends Command {
             
 			const embed = new MessageEmbed()
 				.addField('**prefix (admin only)**', `\nUsed to change prefix.\n**Usage:**\n**${db.get('config').prefix}prefix newPrefix**\n\n`)
-                .addField('**names add (admin only)**', `\nUsed to add names to ban list.\n**Usage:**\n**${db.get('config').prefix}names add names-to-ban**\n\n`)
-                .addField('**names remove (admin only)**', `\nUsed to remove names from ban list.\n**Usage:**\n**${db.get('config').prefix}names remove names-to-remove**\n\n`)
+                .addField('**names aexact/rexact (admin only)**', `\nUsed to add/remove names from exact ban list.\n**Usage:**\n**${db.get('config').prefix}names aexact/rexact names-seperated-by-space**\n\n`)
+                .addField('**names awild/rwild (admin only)**', `\nUsed to add/remove names from wildcard ban list.\n**Usage:**\n**${db.get('config').prefix}names awild/rwild names-seperated-by-space**\n\n`)
                 .addField('**names list (admin only)**', `\nUsed to check ban list.\n**Usage:**\n**${db.get('config').prefix}names list**\n\n`)
 				.addField('**config stats (admin only)**', `\nUsed to check config status.\n**Usage:**\n**${db.get('config').prefix}config stats**\n\n`)
 				.addField('**config logs (admin only)**', `\nUsed to set ban logs channel.\n**Usage:**\n**${db.get('config').prefix}config logs #channel**\n\n`)
